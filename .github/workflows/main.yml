@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Build
+        run: gradle clean build --no-daemon --stacktrace
+
+      - name: Collect jars
+        run: |
+          mkdir -p dist
+          echo "=== jars found ==="
+          find build -name '*.jar' | sort
+          if [ -f build/reobfJar/output.jar ]; then
+            cp build/reobfJar/output.jar dist/chrono-warden.jar
+            echo "picked reobfJar/output.jar"
+          else
+            JAR=$(find build/libs -name 'chrono-warden*.jar' ! -name '*-sources*' ! -name '*-javadoc*' | head -n1)
+            if [ -z "$JAR" ]; then
+              JAR=$(find build/libs -name '*.jar' ! -name '*-sources*' ! -name '*-javadoc*' | head -n1)
+            fi
+            echo "picked $JAR"
+            cp "$JAR" dist/chrono-warden.jar
+          fi
+          ls -lh dist/
+          unzip -l dist/chrono-warden.jar | head -25
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: chrono-warden
+          path: dist/chrono-warden.jar
