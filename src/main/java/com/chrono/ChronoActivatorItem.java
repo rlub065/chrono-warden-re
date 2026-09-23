@@ -30,6 +30,7 @@ public class ChronoActivatorItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tip, TooltipFlag flag) {
         tip.add(Component.literal("§bПКМ — призвать / убрать Chrono Warden"));
-        tip.add(Component.literal("§7Шкала заряда восстанавливается со временем"));
+        tip.add(Component.literal("§7Заряд только от ударов: M1 / барраж / ядро / тремор"));
+        tip.add(Component.literal("§7ЛКМ — M1   ПКМ — блок"));
     }
 }

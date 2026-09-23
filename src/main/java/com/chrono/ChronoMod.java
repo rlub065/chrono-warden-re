@@ -32,8 +32,8 @@ public class ChronoMod {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        CHANNEL.registerMessage(0, KeyPacket.class, KeyPacket::encode, KeyPacket::decode, KeyPacket::handle);
+        int id = 0;
+        CHANNEL.registerMessage(id++, KeyPacket.class, KeyPacket::encode, KeyPacket::decode, KeyPacket::handle);
+        CHANNEL.registerMessage(id++, SyncPacket.class, SyncPacket::encode, SyncPacket::decode, SyncPacket::handle);
     }
 }
-
-// note: item registered above
