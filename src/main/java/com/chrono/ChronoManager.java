@@ -274,7 +274,7 @@ public class ChronoManager {
                 try {
                     FallingBlockEntity fb = FallingBlockEntity.fall(w, pos, state);
                     fb.setDeltaMovement(0, 0.42 + p.getRandom().nextFloat() * 0.28, 0);
-                    fb.setHurtsEntities(false, 0);
+                    fb.setHurtsEntities(0.0F);
                     launched++;
                 } catch (Exception ignored) {}
             }
